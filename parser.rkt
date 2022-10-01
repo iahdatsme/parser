@@ -8,14 +8,20 @@
   (cond
     [(or(empty? i) (equal? (first i) #\$)) (displayln "File empty")]
     [(or(equal? (first i) #\space) (equal? (first i) #\return) (equal? (first i) #\newline)) (rest(first i))]
-    [(equal? #\:)]
-    [(equal? #\()]
-    [(equal? #\+)]
-    [(equal? #\=)]
-    [(equal? #\*)]
-    [(equal? #\-)]
-    [(equal? #\/)]
-    [(equal? #\))])
+    [(equal? (first i) #\:) (rest(first i))]
+    [(equal? (first i) #\()(rest(first i))]
+    [(equal? (first i) #\+)(rest(first i))]
+    [(equal? (first i )#\=)(rest(first i))]
+    [(equal? (first i) #\*) (rest(first i))]
+    [(equal? (first i) #\-)(rest(first i))]
+    [(equal? (first i) #\/) (rest(first i))]
+    [(equal? (first i) #\))(rest(first i))]
+    [(equal? (first i) char-numeric?) (rest(first i))]
+    [(equal? (first i) char?) (rest(first i))]
+
+    
+    )
+  
   )
 
-; (trace scanner)
+(trace scanner)
