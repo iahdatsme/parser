@@ -18,11 +18,17 @@
     [(equal? (first i) #\-) (cons 'Minus (scanner (rest i)))]
     [(equal? (first i) #\/) (cons 'Divide (scanner (rest i)))]
     
-
     [else "Scanner Error" (rest i)]
     )
   
   )
+
+(define (match type i)
+  (if
+   (equal? type (first i))
+   (rest i)
+   (error "this is dumb")))
+  
 
 (scanner input)
 (trace scanner)
