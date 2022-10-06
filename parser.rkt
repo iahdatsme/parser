@@ -17,6 +17,8 @@
     [(equal? (first i) #\*) (cons 'Multiply (scanner (rest i)))]
     [(equal? (first i) #\-) (cons 'Minus (scanner (rest i)))]
     [(equal? (first i) #\/) (cons 'Divide (scanner (rest i)))]
+    ["write" (cons 'Write (scanner (rest i)))]
+    ["read" (cons 'Read (scanner (rest i)))]
     
     [else "Scanner Error" (rest i)]
     )
@@ -29,6 +31,8 @@
    (rest i)
    (error "this is dumb")))
   
+
+
 
 (scanner input)
 (trace scanner)
