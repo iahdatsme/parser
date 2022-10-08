@@ -30,68 +30,68 @@
 
 (define (match type i)
   (if
-   (equal? type (first (first i)))
+   (equal? type (first i))
    (rest i)
-   (error "Syntax error ")))
+   (error "Syntax error")))
   
 (define (program i)
   (case (first i)
   [(ID Write Read eof) (match 'eof (stmt_list i))]
-  [else (error "Syntax error ")]))
+  [else (error "Syntax error")]))
 
 (define (stmt_list i )
   (case (first i)
   [(ID Write Read) (stmt_list(stmt i))]
   [(eof) i]
-  [else (error "Syntax error ")]))
+  [else (error "Syntax error")]))
 
 (define (stmt i)
   (case (first i)
   [(ID) (expr(match 'Eq (match 'ID i)))]
   [(Read) (match 'ID (match 'Read i))]
   [(Write) (expr(match 'Write i))]
-  [else (error "Syntax error ")]))
+  [else (error "Syntax error")]))
 
 (define (expr i)
   (case (first i)
   [(ID Num Lparen) (term_tail(term i))]
-  [else (error "Syntax error ")]))
+  [else (error "Syntax error")]))
 
 (define (term_tail i)
   (case (first i)
   [(Plus Minus) (term_tail(term(add_op i)))]
   [(Rparen ID Write Read eof) i]
-  [else (error "Syntax error ")]))
+  [else (error "Syntax error")]))
 
 (define (term i)
   (case (first i)
   [(ID Num Lparen) (factor_tail(factor i))]
-  [else (error "Syntax error ")]))
+  [else (error "Syntax error")]))
 
 (define (factor_tail i)
   (case (first i)
   [(Multiply Divide) (factor_tail(factor(mult_op i)))]
   [(Plus Minus Rparen ID Write Read eof) i]
-  [else (error "Syntax error ")]))
+  [else (error "Syntax error")]))
 
 (define (factor i)
   (case (first i)
   [(ID) (match 'ID i)]
   [(Num) (match 'Num i)]
   [(Lparen) (match 'Rparen (expr(match 'Lparen i)))]
-  [else (error "Syntax error ")]))
+  [else (error "Syntax error")]))
 
 (define (add_op i)
   (case (first i)
   [(Plus) (match 'Plus i)]
   [(Minus) (match 'Minus i)]
-  [else (error "Syntax error ")]))
+  [else (error "Syntax error")]))
 
 (define (mult_op i)
   (case (first i)
   [(Multiply) (match 'Multiply i)]
   [(Divide) (match 'Divide i)]
-  [else (error "Syntax error ")]))
+  [else (error "Syntax error")]))
 
 ;(scanner input)
 (define token-list(scanner input))
