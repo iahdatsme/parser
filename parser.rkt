@@ -30,7 +30,7 @@
 
 (define (match type i)
   (if
-   (equal? type (first i))
+   (equal? type (first (first i)))
    (rest i)
    (error "Syntax error ")))
   
