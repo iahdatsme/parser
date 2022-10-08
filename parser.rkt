@@ -10,9 +10,10 @@
   (cond
     [(or(empty? i) (equal? (first (list i)) #\$)) (list 'eof)]
     [(char-numeric? (first i)) (cons 'Num (scanner (rest i)))]
-    [(:: alphabetic (:* (:or numeric alphabetic))) (first i) (cons 'ID (scanner (rest i)))]
+    [(char-alphabetic? (first i)) (cons 'ID (scanner (rest i)))]
     [(or (equal? (first i) #\space) (equal? (first i) #\return) (equal? (first i) #\newline)) (scanner (rest i))]
     [(and (equal? (first i) #\:) (equal? (second i) #\=)) (cons 'Eq (scanner (rest (rest i))))]
+    [(equal? (first i) #\=) (cons 'Eq (scanner (rest (rest i))))]
     [(equal? (first i) #\() (cons 'Lparen (scanner (rest i)))]
     [(equal? (first i) #\)) (cons 'Rparen (scanner (rest i)))]
     [(equal? (first i) #\+) (cons 'Plus (scanner (rest i)))]
@@ -35,7 +36,7 @@
   
 (define (program i)
   (case (first i)
-  [(ID Write Read eof) (match 'eof(stmt_list i))]
+  [(ID Write Read eof) (match 'eof (stmt_list i))]
   [else (error "Syntax error ")]))
 
 (define (stmt_list i )
@@ -46,8 +47,8 @@
 
 (define (stmt i)
   (case (first i)
-  [(ID) (expr(match 'Eq(match 'ID i)))]
-  [(Read) (match 'ID(match 'Read i))]
+  [(ID) (expr(match 'Eq (match 'ID i)))]
+  [(Read) (match 'ID (match 'Read i))]
   [(Write) (expr(match 'Write i))]
   [else (error "Syntax error ")]))
 
@@ -77,19 +78,19 @@
   (case (first i)
   [(ID) (match 'ID i)]
   [(Num) (match 'Num i)]
-  [(Lparen) (match 'Rparen(expr(match 'Lparen i)))]
+  [(Lparen) (match 'Rparen (expr(match 'Lparen i)))]
   [else (error "Syntax error ")]))
 
 (define (add_op i)
   (case (first i)
   [(Plus) (match 'Plus i)]
-  [(Minus) (match 'Minus)]
+  [(Minus) (match 'Minus i)]
   [else (error "Syntax error ")]))
 
 (define (mult_op i)
   (case (first i)
   [(Multiply) (match 'Multiply i)]
-  [(Divide) (match 'Divide)]
+  [(Divide) (match 'Divide i)]
   [else (error "Syntax error ")]))
 
 ;(scanner input)
