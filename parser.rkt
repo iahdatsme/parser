@@ -9,7 +9,7 @@
 (define (scanner i)
   (cond
     [(empty? i) (error "Error: ran out of file before seeing an EOF marker ($$).")]
-    [(and (equal? (first i) #\$) (equal? (second i) #\$) '('eof))]
+    [(and (equal? (first i) #\$) (equal? (second i) #\$)) (list 'eof)]
     ; checks to see if file input matches "read" then 
     [(and (equal? (first i) #\r) (equal? (second i) #\e) (equal? (third i) #\a) (equal? (fourth i) #\d)) (cons 'Read (scanner (rest (rest (rest (rest i))))))]
     [(and (equal? (first i) #\w) (equal? (second i) #\r) (equal? (third i) #\i) (equal? (fourth i) #\t) (equal? (fifth i) #\e)) (cons 'Write (scanner (rest (rest (rest (rest (rest i)))))))]
@@ -98,5 +98,11 @@
 
 ;(scanner input)
 (define token-list(scanner input))
+(println input)
+(println token-list)
+
+
 (program token-list)
+(displayln "Accept")
+
 ;(trace scanner)
