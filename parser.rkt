@@ -8,7 +8,11 @@
 
 (define (scanner i)
   (cond
-    [(or(empty? i) (equal? (first (list i)) #\$)) (list 'eof)]
+    [(empty? i) (error "Error: ran out of file before seeing an EOF marker ($$).")]
+    [(and (equal? (first i) #\$) (equal? (second i) #\$) '('eof))]
+    ; checks to see if file input matches "read" then 
+    [(and (equal? (first i) #\r) (equal? (second i) #\e) (equal? (third i) #\a) (equal? (fourth i) #\d)) (cons 'Read (scanner (rest (rest (rest (rest i))))))]
+    [(and (equal? (first i) #\w) (equal? (second i) #\r) (equal? (third i) #\i) (equal? (fourth i) #\t) (equal? (fifth i) #\e)) (cons 'Write (scanner (rest (rest (rest (rest (rest i)))))))]
     [(char-numeric? (first i)) (cons 'Num (scanner (rest i)))]
     [(char-alphabetic? (first i)) (cons 'ID (scanner (rest i)))]
     [(or (equal? (first i) #\space) (equal? (first i) #\return) (equal? (first i) #\newline)) (scanner (rest i))]
@@ -20,10 +24,9 @@
     [(equal? (first i) #\*) (cons 'Multiply (scanner (rest i)))]
     [(equal? (first i) #\-) (cons 'Minus (scanner (rest i)))]
     [(equal? (first i) #\/) (cons 'Divide (scanner (rest i)))]
-    ["write" (cons 'Write (scanner (rest i)))]
-    ["read" (cons 'Read (scanner (rest i)))]
+
     
-    [else "Scanner Error" (rest i)]
+    [else (error (format "Unrecognized token: ~a" (first i)))]
     )
   
   )
@@ -36,12 +39,12 @@
   
 (define (program i)
   (case (first i)
-  [(ID Write Read eof) (match 'eof (stmt_list i))]
+  [(ID Read Write eof) (match 'eof (stmt_list i))]
   [else (error "Syntax error")]))
 
 (define (stmt_list i )
   (case (first i)
-  [(ID Write Read) (stmt_list(stmt i))]
+  [(ID Read Write) (stmt_list(stmt i))]
   [(eof) i]
   [else (error "Syntax error")]))
 
